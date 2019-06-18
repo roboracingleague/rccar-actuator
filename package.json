@@ -1,0 +1,22 @@
+{
+  "name": "@nitescuc/rccar-actuator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitescuc/rccar-actuator.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nitescuc/rccar-actuator/issues"
+  },
+  "homepage": "https://github.com/nitescuc/rccar-actuator#readme",
+  "dependencies": {
+    "pigpio": "^1.2.2"
+  }
+}
