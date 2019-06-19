@@ -8,7 +8,11 @@ class Actuator {
         this.setValue(0);      
     }
     setValue(value) {
-        this.gpio.servoWrite(this.remap(value));
+        this.value = value;
+        this.gpio.servoWrite(this.remap(this.value));
+    }
+    getValue() {
+        return this.value;
     }
     remap(value) {
         const remap = this.config.remapValues;
