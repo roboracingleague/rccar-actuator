@@ -7,6 +7,11 @@ class Actuator {
         // initialize to middle
         this.setValue(0);      
     }
+
+    setRemapMaxValue(value) {
+        config.remapValues[1] = value;
+    }
+
     setValue(value) {
         this.value = value;
         this.gpio.servoWrite(this.remap(this.value));
