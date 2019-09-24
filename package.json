@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/nitescuc/rccar-actuator#readme",
   "dependencies": {
-    "pigpio": "^1.2.2"
+    "pigpio": "^1.2.2",
+    "node-pid-controller": "^1.0.1"
   }
 }
