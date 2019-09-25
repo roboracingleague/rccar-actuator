@@ -49,7 +49,7 @@ class Actuator {
     updatePID() {
         let newInput = this.pid.update(value);
         if (this.config.sensorMode === 'invert') newInput = newInput * (-1);
-        if (math.abs(newInput) > this.config.remapPIDMax) newInput = this.config.remapPIDMax;
+        if (Math.abs(newInput) > this.config.remapPIDMax) newInput = this.config.remapPIDMax;
 
         this.gpio.servoWrite(this.remap(newInput/this.config.remapPIDMax));
     }
