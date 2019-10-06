@@ -22,6 +22,9 @@ class Actuator {
     setRemapMaxValue(value) {
         this.config.remapValues[1] = value;
     }
+    setRemapMinValue(value) {
+        this.config.remapValues[0] = value;
+    }
 
     setValue(value) {
         this.value = value;
