@@ -8,7 +8,7 @@ class Actuator {
         // initialize to middle
         this.setValue(0); 
         this.setSensorValue(0);
-        //
+        
         if (this.config.sensorMode && this.config.sensorMode !== 'none') {
             this.pid = new Controller({
                 k_p: 0.25,
@@ -16,7 +16,9 @@ class Actuator {
                 k_d: 0.01,
                 dt: 0.5
             });
-        }  
+        }
+
+        if (!this.config.trim) this.config.trim = 0;
     }
 
     setRemapMaxValue(value) {
@@ -24,6 +26,9 @@ class Actuator {
     }
     setRemapMinValue(value) {
         this.config.remapValues[0] = value;
+    }
+    setTrimValue(value) {
+        this.config.trim = value;
     }
 
     setValue(value) {
@@ -47,7 +52,7 @@ class Actuator {
         if (value < -1) return remap[0];
         if (value > 1) return remap[1];
 
-        return Math.round(1500 + value * (value < 0 ? 1500 - remap[0] : remap[1] - 1500 ));
+        return Math.round(1500 + this.config.trim + value * (value < 0 ? 1500 - remap[0] : remap[1] - 1500 ));
     }
     updatePID() {
         let newInput = this.pid.update(value);
