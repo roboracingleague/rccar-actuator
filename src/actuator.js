@@ -4,6 +4,7 @@ const Controller = require('node-pid-controller');
 class Actuator {
     constructor(config) {
         this.config = config;
+        if (!this.config.trim) this.config.trim = 0;
         this.gpio = new Gpio(this.config.pin, {mode: Gpio.OUTPUT}); 
         // initialize to middle
         this.setValue(0); 
@@ -17,8 +18,6 @@ class Actuator {
                 dt: 0.5
             });
         }
-
-        if (!this.config.trim) this.config.trim = 0;
     }
 
     setRemapMaxValue(value) {
@@ -29,6 +28,7 @@ class Actuator {
     }
     setTrimValue(value) {
         this.config.trim = value;
+        this.setValue(this.value);
     }
 
     setValue(value) {
