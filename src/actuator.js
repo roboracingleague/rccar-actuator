@@ -34,7 +34,7 @@ class Actuator {
     setValue(value) {
         this.value = value;
         if (this.pid) {
-            ctr.setTarget(value);
+            this.pid.setTarget(value);
         } else {
             this.gpio.servoWrite(this.remap(this.value));            
         }
@@ -55,7 +55,7 @@ class Actuator {
         return Math.round(1500 + this.config.trim + value * (value < 0 ? 1500 - remap[0] : remap[1] - 1500 ));
     }
     updatePID() {
-        let newInput = this.pid.update(value);
+        let newInput = this.pid.update(this.sensorValue);
         if (this.config.sensorMode === 'invert') newInput = newInput * (-1);
         if (Math.abs(newInput) > this.config.remapPIDMax) newInput = this.config.remapPIDMax;
 
