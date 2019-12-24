@@ -28,6 +28,8 @@ class Actuator {
     }
 
     setValue(value) {
+        if (this.locked) return;
+        
         this.value = value;
         this.gpio.servoWrite(this.remap(this.value));
     }
@@ -36,6 +38,14 @@ class Actuator {
     }
     getValue() {
         return this.value;
+    }
+    stop(cb) {
+        if (this.locked || this.value <= 0.2) return;
+
+        this.setValue(-1);
+        this.locked = true;
+
+        setTimeout(() => { this.locked = false; this.setValue(0); }, 2000);
     }
     remap(value) {
         value = this.applySensorCorrection(value);
