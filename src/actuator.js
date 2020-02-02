@@ -65,11 +65,11 @@ class Actuator {
         return this.config.sensorMode === 'invert' ? this.sensorValue < target : this.sensorValue > target;        
     }
     applySensorCorrection(value) {
-        if (!(this.sensorMode !== 'none') || !this.config.sensorTargets) return value;
+        if ((this.config.sensorMode === 'none') || (this.config.sensorMode == null) || !this.config.sensorTargets) return value;
 
         const target = this.config.sensorTargets[`_${value.toString().substring(2, 6)}`];
         if (target && this.isSensorValueSuperior(target)) {
-            const diff = (target - this.sensorValue) / this.config.breakIntensity;
+            const diff = Math.abs(target - this.sensorValue) / this.config.breakIntensity;
             value = value - diff;
             if (value < -1) value = -1;
         }
