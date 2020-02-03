@@ -51,7 +51,7 @@ class Actuator {
         setTimeout(() => { this.locked = false; this.setValue(0); }, 2000);
     }
     remap(value) {
-        value = this.applySensorCorrection(value);
+        value = this.applyValueCorrection(value);
 
         const remap = this.config.remapValues;
         if (!remap) return value;
@@ -62,24 +62,26 @@ class Actuator {
         return Math.round(1500 + this.config.trim + value * (value < 0 ? 1500 - remap[0] : remap[1] - 1500 ));
     }
 
+    hasSensorMode() {
+        return (this.config.sensorMode !== 'none') && (this.config.sensorMode != null);
+    }
     isSensorValueSuperior(target) {
         if (!this.sensorValue) return false;
 
         return this.config.sensorMode === 'invert' ? this.sensorValue < target : this.sensorValue > target;        
     }
-    applySensorCorrection(value) {
-        if ((this.config.sensorMode === 'none') || (this.config.sensorMode == null) || !this.config.sensorTargets) return value;
-
+    applyValueCorrection(value) {
         const refValue = `_${value.toString().substring(2, 6)}`;
         
         value = this.config.throttleRewrite && this.config.throttleRewrite[refValue] ? this.config.throttleRewrite[refValue] : value;
 
-        const target = this.config.sensorTargets[refValue];
-        if (target && this.isSensorValueSuperior(target)) {
+        const target = this.config.sensorTargets && this.config.sensorTargets[refValue];
+        if (target && this.hasSensorMode() && this.isSensorValueSuperior(target)) {
             const diff = Math.abs(target - this.sensorValue) / this.config.breakIntensity;
             value = value - diff;
             if (value < -1) value = -1;
         }
+
         return value;
     }
 }
