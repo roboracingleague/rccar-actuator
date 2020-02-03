@@ -23,6 +23,9 @@ class Actuator {
     setSensorTargets(value) {
         this.config.sensorTargets = Object.assign(this.config.sensorTargets, value);
     }
+    setThrottleRewrite(value) {
+        this.config.throttleRewrite = Object.assign(this.config.throttleRewrite, value);
+    }
     setBreakIntensity(value) {
         this.config.breakIntensity = value;
     }
@@ -67,7 +70,11 @@ class Actuator {
     applySensorCorrection(value) {
         if ((this.config.sensorMode === 'none') || (this.config.sensorMode == null) || !this.config.sensorTargets) return value;
 
-        const target = this.config.sensorTargets[`_${value.toString().substring(2, 6)}`];
+        const refValue = `_${value.toString().substring(2, 6)}`;
+        
+        value = this.config.throttleRewrite && this.config.throttleRewrite[refValue] ? this.config.throttleRewrite[refValue] : value;
+
+        const target = this.config.sensorTargets[refValue];
         if (target && this.isSensorValueSuperior(target)) {
             const diff = Math.abs(target - this.sensorValue) / this.config.breakIntensity;
             value = value - diff;
